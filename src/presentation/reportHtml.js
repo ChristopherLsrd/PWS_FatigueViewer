@@ -52,7 +52,7 @@ function nameCell(w, locale) {
 
 function availableRow(w, locale) {
   const level = levelClass(w.level);
-  return `<tr data-sort-name="${escapeHtml(w.name.toLowerCase())}" data-sort-fatigue="${w.fatigue}"`
+  return `<tr class="fv-row-link" data-fv-worker="${escapeHtml(Number(w.contractId))}" data-sort-name="${escapeHtml(w.name.toLowerCase())}" data-sort-fatigue="${w.fatigue}"`
     + ` data-sort-risk="${w.risk}" data-sort-recovery="${w.daysToRecover}">`
     + nameCell(w, locale)
     + `<td><div class="fv-bar"><div class="fv-bar-fill ${level}" style="width:${w.fatigue}%"></div></div>`
@@ -78,7 +78,7 @@ function availableTable(list, locale) {
 
 // rows : [{ worker, cells }] ; la première colonne est le nom avec l'avatar, les autres du texte.
 function simpleTable(headers, rows, locale) {
-  const body = rows.map(({ worker, cells }) => `<tr>${nameCell(worker, locale)}`
+  const body = rows.map(({ worker, cells }) => `<tr class="fv-row-link" data-fv-worker="${escapeHtml(Number(worker.contractId))}">${nameCell(worker, locale)}`
     + `<td>${cells.map(escapeHtml).join('</td><td>')}</td></tr>`).join('');
   return `<table class="fv-table"><thead><tr>${headers.map((h) => th(h)).join('')}</tr></thead>`
     + `<tbody>${body}</tbody></table>`;

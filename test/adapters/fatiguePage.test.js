@@ -152,3 +152,9 @@ test('stop et reinject exécutent leurs scripts', () => {
   page.reinject();
   assert.deepEqual(ui.scripts, [PAGE_SCRIPT, STOP_SCRIPT, PAGE_SCRIPT]);
 });
+
+test('PAGE_SCRIPT : un clic sur une ligne ouvre la fiche, le bouton Congé reste prioritaire', () => {
+  assert.match(PAGE_SCRIPT, /if \(leave\) \{ openLeave\([^}]*\); return; \}/);
+  assert.match(PAGE_SCRIPT, /closest\('tr\[data-fv-worker\]'\)/);
+  assert.match(PAGE_SCRIPT, /Booking\.showWorkerDetails\(contractId\)/);
+});

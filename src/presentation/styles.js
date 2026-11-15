@@ -37,6 +37,8 @@ const FATIGUE_VIEWER_CSS = `
   background: var(--background-3); color: var(--color-1); border: 1px solid var(--color-2); box-sizing: border-box; }
 .fv-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .fv-leave-button { padding: 2px 10px; }
+.fv-table tr.fv-row-link { cursor: pointer; }
+.fv-table tr.fv-row-link:hover td { background: color-mix(in srgb, var(--m-tint, #fff) 4%, transparent); }
 .fv-hint { color: var(--color-2); }
 .fv-settings .fv-setting-help { display: block; color: var(--color-2); font-size: 0.85em; }
 .fv-settings-status { min-height: 1.2em; color: var(--positive-effect); }

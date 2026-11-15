@@ -85,6 +85,11 @@ const PAGE_SCRIPT = `(function () { try {
       }).catch(function (e) { console.error('[fatigue-viewer] réglage', e); });
     });
   }
+  // Fiche du catcheur : même fenêtre que les listes du jeu (par contrat).
+  function openWorker(contractId) {
+    if (!isFinite(contractId)) return;
+    if (typeof Booking !== 'undefined' && Booking && typeof Booking.showWorkerDetails === 'function') Booking.showWorkerDetails(contractId);
+  }
   function openLeave(contractId) {
     status('', false);
     invoke('leave-dialog-html', contractId, locale()).then(function (res) {
@@ -133,7 +138,9 @@ const PAGE_SCRIPT = `(function () { try {
         var th = event.target.closest('th[data-fv-sort]');
         if (th) { sortTable(th.closest('table'), th); return; }
         var leave = event.target.closest('[data-fv-leave]');
-        if (leave) openLeave(Number(leave.getAttribute('data-fv-leave')));
+        if (leave) { openLeave(Number(leave.getAttribute('data-fv-leave'))); return; }
+        var row = event.target.closest('tr[data-fv-worker]');
+        if (row) openWorker(Number(row.getAttribute('data-fv-worker')));
       };
       if (button) {
         button.onclick = function () {

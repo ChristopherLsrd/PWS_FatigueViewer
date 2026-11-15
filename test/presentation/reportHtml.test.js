@@ -100,3 +100,11 @@ test('la fatigue décimale est arrondie à l\'affichage, la valeur exacte reste 
   assert.match(html, /data-sort-fatigue="14.2"/);
   assert.match(html, /style="width:14.2%"/);
 });
+
+test('chaque ligne de catcheur porte son contrat pour ouvrir sa fiche', () => {
+  const html = renderReport(REPORT, 'fr');
+  for (const id of [13100, 2, 3, 4, 5]) {
+    assert.match(html, new RegExp(`<tr class="fv-row-link" data-fv-worker="${id}"[ >]`), `ligne ${id}`);
+  }
+  assert.match(html, /data-fv-worker="13100" data-sort-name=/);
+});
