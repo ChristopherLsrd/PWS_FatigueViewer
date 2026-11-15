@@ -7,3 +7,5 @@ docs/
 node_modules/
 .DS_Store
 Thumbs.db
+# Paquet de release et du Workshop (npm run package)
+dist/

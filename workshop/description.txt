@@ -1,0 +1,45 @@
+[h1]Fatigue Viewer[/h1]
+Track your roster's fatigue and injury risk, see who needs a break from the main office, and send wrestlers on time off in one click.
+
+[h2]Features[/h2]
+[list]
+[*][b]Fatigue Viewer page[/b] (side menu): every available wrestler with their fatigue bar, injury risk per match (percentage and Low / Medium / High level), days until fully rested and traits (injury prone, cursed, robust). Click a column header to sort, click a wrestler to open their profile.
+[*][b]On leave / suspended[/b] and [b]Injured[/b] sections, with the reason or injury and the return date.
+[*][b]Time off button[/b]: pick a length from 1 to 90 days (default: the time needed to fully recover). The plugin writes exactly what the game's own time off button writes, and the game brings the wrestler back on the return date.
+[*][b]Main office card[/b]: a dashboard card like the game's own. Move it, resize it or hide it in Edit Layout. It lists tired and high-risk wrestlers; click the title to open the page, click a wrestler to open their profile.
+[*][b]Settings[/b] from the page: fatigue threshold, include high-risk wrestlers, number of rows in the card, card on or off.
+[*][b]Languages[/b]: English and French, plus German, Spanish, Italian and Portuguese. Follows the game's language.
+[/list]
+
+[h2]How the risk is computed[/h2]
+Risk per match = (2 + fatigue / 2) / 2000, doubled for injury prone, doubled for cursed, divided by 4 for robust. Low below 0.75 %, High from 1.5 %. Fatigue recovers 3 points a day. Show-specific factors (match type, venue) are not counted.
+
+[h2]Notes[/h2]
+[list]
+[*]Sending a wrestler on time off changes your save, like the game's button does. Nothing else is written.
+[*]Permissions: database (read), database:write (time off only), events.
+[/list]
+
+[hr][/hr]
+
+[h1]Fatigue Viewer (français)[/h1]
+Suis la fatigue et le risque de blessure de ton roster, repère depuis le Bureau qui a besoin de repos, et envoie un catcheur en congé en un clic.
+
+[h2]Fonctions[/h2]
+[list]
+[*][b]Page Fatigue Viewer[/b] (menu latéral) : chaque catcheur disponible avec sa barre de fatigue, son risque de blessure par match (pourcentage et niveau Faible / Moyen / Élevé), les jours avant récupération complète et ses traits (fragile, maudit, robuste). Clic sur un en-tête pour trier, clic sur un catcheur pour ouvrir sa fiche.
+[*]Sections [b]En congé / suspendus[/b] et [b]Blessés[/b], avec le motif ou la blessure et la date de retour.
+[*][b]Bouton Congé[/b] : durée de 1 à 90 jours (par défaut, le temps de récupérer complètement). Le plugin écrit exactement ce qu'écrit le bouton de congé du jeu, et le jeu fait revenir le catcheur à la date prévue.
+[*][b]Carte du Bureau[/b] : une carte comme celles du jeu, à déplacer, redimensionner ou masquer en mode « Modifier la disposition ». Elle liste les catcheurs fatigués ou à risque élevé ; clic sur le titre pour ouvrir la page, clic sur un catcheur pour ouvrir sa fiche.
+[*][b]Réglages[/b] depuis la page : seuil de fatigue, catcheurs à risque élevé, nombre de lignes de la carte, carte activée ou non.
+[*][b]Langues[/b] : français et anglais, plus allemand, espagnol, italien et portugais, selon la langue du jeu.
+[/list]
+
+[h2]Calcul du risque[/h2]
+Risque par match = (2 + fatigue / 2) / 2000, doublé si fragile, doublé si maudit, divisé par 4 si robuste. Faible sous 0,75 %, Élevé à partir de 1,5 %. La fatigue baisse de 3 points par jour. Les facteurs propres au show (type de match, salle) ne sont pas comptés.
+
+[h2]À savoir[/h2]
+[list]
+[*]Envoyer un catcheur en congé modifie ta sauvegarde, comme le bouton du jeu. Rien d'autre n'est écrit.
+[*]Permissions : database (lecture), database:write (congé uniquement), events.
+[/list]

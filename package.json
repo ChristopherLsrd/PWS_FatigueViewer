@@ -4,7 +4,8 @@
   "private": true,
   "description": "Plugin Pro Wrestling Sim : fatigue, risque de blessure et congés du roster.",
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "package": "node scripts/package.js"
   },
   "license": "UNLICENSED"
 }

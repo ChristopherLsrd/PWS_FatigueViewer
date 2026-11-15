@@ -43,6 +43,25 @@ Bouton **Réglages** en haut de la page Fatigue Viewer. Chaque changement est en
 
 Logo pour le Steam Workshop : [assets/fatigue-viewer-logo.png](assets/fatigue-viewer-logo.png) (source SVG dans le même dossier).
 
+## Release et Steam Workshop
+
+`npm run package` crée `dist/fatigue-viewer/` (uniquement `plugin.json`, `index.js`, `README.md` et `src/`) et `dist/fatigue-viewer-<version>.zip` pour la release GitHub. Le texte de la page Workshop (anglais et français, BBCode) est dans [workshop/description.txt](workshop/description.txt).
+
+Envoi sur le Workshop, depuis le jeu : le formulaire copie tout le dossier `plugins/fatigue-viewer`. Si ce dossier est une jonction vers le dépôt, remplace-la d'abord par une copie de `dist/fatigue-viewer/`, sinon `.git`, `test/` et `docs/` partiraient avec.
+
+1. `npm run package`.
+2. Remplace la jonction par le dossier propre (`rmdir` ne supprime que le lien) :
+   ```
+   rmdir "%APPDATA%ProWrestlingSimulatorpluginsatigue-viewer"
+   xcopy /E /I distatigue-viewer "%APPDATA%ProWrestlingSimulatorpluginsatigue-viewer"
+   ```
+3. Dans le jeu, page d'envoi Workshop : titre « Fatigue Viewer », description de `workshop/description.txt`, image `assets/fatigue-viewer-logo.png` (moins de 1 Mo), plugin « Fatigue Viewer ». L'élément est publié en public.
+4. Remets la jonction pour continuer à développer :
+   ```
+   rmdir /S /Q "%APPDATA%ProWrestlingSimulatorpluginsatigue-viewer"
+   mklink /J "%APPDATA%ProWrestlingSimulatorpluginsatigue-viewer" <chemin du dépôt>
+   ```
+
 ## Développement
 
 Architecture propre : `src/domain` (règles pures), `src/application` (ports et cas d'usage), `src/presentation` (HTML et textes), `src/adapters` (base de données et interface du jeu). `test/architecture.test.js` vérifie le sens des dépendances.
