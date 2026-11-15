@@ -18,6 +18,7 @@ const PAGE_SCRIPT = `(function () { try {
   var PLUGIN = 'fatigue-viewer';
   var texts = { settings: '', back: '', loading: '' };
   var showingSettings = false;
+  var seq = 0;
   function locale() {
     try { return (typeof I18n !== 'undefined' && I18n && I18n.locale) ? String(I18n.locale) : null; } catch (e) { return null; }
   }
@@ -35,8 +36,13 @@ const PAGE_SCRIPT = `(function () { try {
   function load() {
     var content = el('fv-content');
     if (!content) return;
-    content.innerHTML = '<div class="loading">' + (texts.loading || '') + '</div>';
-    invoke('report-html', locale()).then(function (html) { content.innerHTML = html; resolveAvatars(content); })
+    var my = ++seq;
+    var loading = document.createElement('div');
+    loading.className = 'loading';
+    loading.textContent = texts.loading || '';
+    content.innerHTML = '';
+    content.appendChild(loading);
+    invoke('report-html', locale()).then(function (html) { if (my !== seq) return; content.innerHTML = html; resolveAvatars(content); })
       .catch(function (e) { console.error('[fatigue-viewer] rapport', e); });
   }
   function sortTable(table, th) {
@@ -91,8 +97,11 @@ const PAGE_SCRIPT = `(function () { try {
       var ret = modal.querySelector('#fv-leave-return');
       var err = modal.querySelector('#fv-leave-error');
       var confirm = modal.querySelector('#fv-leave-confirm');
+      var previewSeq = 0;
       input.addEventListener('input', function () {
+        var mine = ++previewSeq;
         invoke('leave-preview', Number(input.value), locale()).then(function (p) {
+          if (mine !== previewSeq) return;
           if (p && p.ok) { ret.textContent = p.returnLabel; err.textContent = ''; confirm.classList.remove('disabled'); }
           else { ret.textContent = '—'; err.textContent = p ? p.message : ''; confirm.classList.add('disabled'); }
         }).catch(function (e) { console.error('[fatigue-viewer] aperçu', e); });
@@ -131,7 +140,9 @@ const PAGE_SCRIPT = `(function () { try {
           showingSettings = !showingSettings;
           if (label) label.textContent = showingSettings ? texts.back : texts.settings;
           if (!showingSettings) { load(); return; }
+          var my = ++seq;
           invoke('settings-form-html', locale()).then(function (html) {
+            if (my !== seq) return;
             content.innerHTML = html;
             var form = content.querySelector('form.fv-settings');
             if (form) bindSettings(form);

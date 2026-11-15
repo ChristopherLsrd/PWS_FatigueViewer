@@ -76,6 +76,16 @@ test('les scripts du renderer sont du JavaScript valide', () => {
   assert.match(PAGE_SCRIPT, /content\.innerHTML = html; resolveAvatars\(content\);/);
 });
 
+test('PAGE_SCRIPT ignore les réponses périmées et construit le chargement via le DOM', () => {
+  assert.match(PAGE_SCRIPT, /var seq = 0;/);
+  assert.match(PAGE_SCRIPT, /var my = \+\+seq;/);
+  assert.match(PAGE_SCRIPT, /my !== seq/);
+  assert.match(PAGE_SCRIPT, /var previewSeq = 0;/);
+  assert.match(PAGE_SCRIPT, /\+\+previewSeq/);
+  assert.match(PAGE_SCRIPT, /textContent = texts\.loading/);
+  assert.doesNotMatch(PAGE_SCRIPT, /'<div class="loading">'/);
+});
+
 test('page-texts traduit les libellés', () => {
   assert.deepEqual(setup().ipc.call('page-texts', 'fr'), { settings: 'Réglages', back: 'Retour à la liste', loading: 'Chargement…' });
 });
