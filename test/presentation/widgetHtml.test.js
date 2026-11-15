@@ -25,7 +25,7 @@ test('carte au format des widgets du Bureau, cliquable vers la page', () => {
 test('une ligne par catcheur : avatar, nom, badge, puis fatigue et risque', () => {
   const html = renderWidget({ ok: true, enabled: true, items: ITEMS, total: 2 }, 'fr');
   assert.equal((html.match(/class="fv-office-row"/g) || []).length, 2);
-  assert.match(html, /class="fv-avatar"[^>]*data-fv-picture="Tired\.png"/);
+  assert.match(html, /<div class="fv-office-row"><span class="fv-avatar"[^>]*data-fv-picture="Tired\.png"[^>]*>TO<\/span><div class="fv-office-text"><div class="fv-office-top">/);
   assert.match(html, /<span class="fv-office-name">Tired &lt;One&gt;<\/span>/);
   assert.match(html, /class="fv-badge fv-level-high">Élevé</);
   assert.match(html, /class="fv-badge fv-level-medium">Moyen</);

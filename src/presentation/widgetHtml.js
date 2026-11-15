@@ -11,13 +11,14 @@ const PAGE_ID = 'fatigueViewerPage';
 function row(w, locale) {
   const meta = `${t(locale, 'widget.fatigue', { value: Math.round(w.fatigue) })} · ${formatPercent(w.risk, locale)}`;
   return '<div class="fv-office-row">'
-    + '<div class="fv-office-top">'
     + renderAvatar(w, locale)
+    + '<div class="fv-office-text">'
+    + '<div class="fv-office-top">'
     + `<span class="fv-office-name">${escapeHtml(w.name)}</span>`
     + `<span class="fv-badge ${levelClass(w.level)}">${escapeHtml(t(locale, `level.${w.level}`))}</span>`
     + '</div>'
     + `<div class="fv-office-meta">${escapeHtml(meta)}</div>`
-    + '</div>';
+    + '</div></div>';
 }
 
 /** Contenu de la carte du Bureau (.panel des widgets du jeu) ; '' si désactivé ou en erreur. */
