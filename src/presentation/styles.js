@@ -41,15 +41,17 @@ const FATIGUE_VIEWER_CSS = `
 .fv-settings .fv-setting-help { display: block; color: var(--color-2); font-size: 0.85em; }
 .fv-settings-status { min-height: 1.2em; color: var(--positive-effect); }
 .fv-settings-status.is-error { color: var(--alert); }
-.fv-widget { margin: 10px 0; padding: 10px; background: var(--background-1); border: var(--panel-border);
-  border-radius: var(--panel-radius); box-shadow: var(--panel-shadow); color: var(--color-0); }
-.fv-widget-title { margin: 0 0 8px; }
-.fv-widget-list { list-style: none; margin: 0; padding: 0; }
-.fv-widget-item { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center; padding: 3px 0; }
-.fv-widget-fatigue { color: var(--color-2); }
-.fv-widget-footer { display: flex; justify-content: space-between; margin-top: 8px; }
-.fv-widget-more { color: var(--color-2); }
-.fv-widget-link { color: var(--color-1); text-decoration: underline; }
+#mainOfficePage .fv-office { display: flex; flex-direction: column; gap: 4px; }
+#mainOfficePage .fv-office-row { display: flex; flex-direction: column; gap: 5px; padding: 8px 10px; border-radius: 8px; }
+#mainOfficePage .fv-office-row:hover { background: color-mix(in srgb, var(--m-tint) 3%, transparent); }
+#mainOfficePage .fv-office-top { display: flex; align-items: center; gap: 8px; }
+#mainOfficePage .fv-office-name { flex: 1 1 auto; min-width: 0; font-weight: 600; color: var(--m-fg);
+  font-size: var(--font-size-m); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#mainOfficePage .fv-office-top .fv-badge { flex-shrink: 0; }
+#mainOfficePage .panelContents.fv-office .fv-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+#mainOfficePage .fv-office-meta { padding-left: 40px; color: var(--m-fg-2); font-size: var(--font-size-sm); }
+#mainOfficePage .fv-office-more { padding: 4px 10px; text-align: right; color: var(--m-fg-muted); font-size: var(--font-size-sm); }
+#mainOfficePage .fv-office-empty { padding: 8px 10px; color: var(--m-fg-muted); }
 `;
 
 module.exports = { FATIGUE_VIEWER_CSS };

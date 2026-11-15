@@ -60,10 +60,9 @@ module.exports = Object.freeze({
   'settings.saved': 'Enregistré',
   'settings.error': 'Échec de l\'enregistrement',
   'widget.title': 'Fatigue et risque de blessure',
-  'widget.empty': 'Aucun catcheur à surveiller.',
+  'widget.empty': 'Aucun catcheur fatigué ou à risque.',
   'widget.more.one': '+ {count} autre',
   'widget.more.other': '+ {count} autres',
-  'widget.seeAll': 'Voir tout',
   'widget.fatigue': 'Fatigue {value}',
   'avatar.photoOf': 'Photo de {name}',
 });

@@ -1,45 +1,93 @@
 'use strict';
-const { renderWidget } = require('../presentation/widgetHtml');
+const { renderWidget, WIDGET_ID } = require('../presentation/widgetHtml');
+const { resolveAvatarsJs } = require('../presentation/avatar');
+const { t } = require('../presentation/i18n');
 
-const CONTAINER_ID = 'fv-office-widget';
-
-// Script exécuté dans la fenêtre du jeu : gère le conteneur du widget dans le Bureau (mainOfficePage).
+// Script exécuté dans la fenêtre du jeu. Le Bureau est une grille GridStack
+// (MainOffice.grid) dont les cartes sont listées dans MainOffice.WIDGETS : la carte
+// du plugin y est ajoutée comme les autres, ce qui lui donne le cadre, la poignée
+// de déplacement, le menu des widgets et la position sauvegardée par le jeu.
 const WIDGET_SCRIPT = `(function () { try {
   if (window.FatigueViewerWidget) window.FatigueViewerWidget.stop();
   var PLUGIN = 'fatigue-viewer';
-  var CONTAINER_ID = '${CONTAINER_ID}';
-  var observer = null;
-  var observed = null;
+  var ID = '${WIDGET_ID}';
+  var MAX_TRIES = 120;
   var pending = false;
   var again = false;
+  var stopped = false;
+  var retry = null;
+  var tries = 0;
   function locale() {
     try { return (typeof I18n !== 'undefined' && I18n && I18n.locale) ? String(I18n.locale) : null; } catch (e) { return null; }
   }
-  function page() { return document.getElementById('mainOfficePage'); }
-  function target() {
-    var office = page();
-    if (!office) return null;
-    return office.querySelector('.pageContainer') || office;
+  function office() {
+    return (typeof MainOffice !== 'undefined' && MainOffice && MainOffice.grid) ? MainOffice : null;
   }
-  function container() {
-    var node = document.getElementById(CONTAINER_ID);
-    if (node) return node;
-    var parent = target();
-    if (!parent) return null;
-    node = document.createElement('div');
-    node.id = CONTAINER_ID;
-    node.className = 'fv-office-widget';
-    node.setAttribute('data-plugin-id', PLUGIN);
-    node.hidden = true;
-    parent.appendChild(node);
-    return node;
+  function resolveAvatars(node) { ${resolveAvatarsJs('node')} }
+  function card() {
+    return document.querySelector('#mainOfficePage .mainOfficeGrid .grid-stack-item[gs-id="' + ID + '"]');
+  }
+  function register(mo, title) {
+    for (var i = 0; i < mo.WIDGETS.length; i++) {
+      if (mo.WIDGETS[i].id === ID) { mo.WIDGETS[i].title = title; return; }
+    }
+    mo.WIDGETS.push({ id: ID, title: title });
+  }
+  function unregister(mo) {
+    for (var i = mo.WIDGETS.length - 1; i >= 0; i--) if (mo.WIDGETS[i].id === ID) mo.WIDGETS.splice(i, 1);
+    if (mo._gameVisible) delete mo._gameVisible[ID];
+    try { mo.buildWidgetMenu(); } catch (e) {}
+  }
+  function ensureCard(mo) {
+    var el = card();
+    if (el) return el;
+    var gridEl = document.querySelector('#mainOfficePage .mainOfficeGrid');
+    if (!gridEl) return null;
+    el = document.createElement('div');
+    el.className = 'grid-stack-item';
+    el.setAttribute('gs-id', ID);
+    el.setAttribute('gs-w', 3);
+    el.setAttribute('gs-h', 5);
+    el.setAttribute('data-plugin-id', PLUGIN);
+    var content = document.createElement('div');
+    content.className = 'grid-stack-item-content';
+    el.appendChild(content);
+    gridEl.appendChild(el);
+    mo.grid.makeWidget(el);
+    return el;
+  }
+  function removeCard() {
+    var mo = office();
+    var el = card();
+    if (el) {
+      if (mo && el.dataset.removed !== '1') { try { mo.grid.removeWidget(el, true); } catch (e) {} }
+      if (el.parentNode) el.remove();
+    }
+    if (typeof MainOffice !== 'undefined' && MainOffice && MainOffice.WIDGETS) unregister(MainOffice);
+  }
+  function schedule() {
+    if (stopped || retry || tries >= MAX_TRIES) return;
+    tries++;
+    retry = setTimeout(function () { retry = null; refresh(); }, 1000);
+  }
+  function show(reply) {
+    var mo = office();
+    if (!mo) { schedule(); return; }
+    if (!reply || !reply.html) { removeCard(); return; }
+    var el = ensureCard(mo);
+    if (!el) { schedule(); return; }
+    el.querySelector('.grid-stack-item-content').innerHTML = reply.html;
+    register(mo, reply.title || 'Fatigue Viewer');
+    mo.setGameVisible(ID, true);
+    try { mo.buildWidgetMenu(); } catch (e) {}
+    resolveAvatars(el);
   }
   function settle() {
     pending = false;
     if (again) { again = false; refresh(); }
   }
   function refresh() {
-    watch();
+    if (stopped) return;
     if (pending) { again = true; return; }
     pending = true;
     var request;
@@ -50,36 +98,20 @@ const WIDGET_SCRIPT = `(function () { try {
       settle();
       return;
     }
-    Promise.resolve(request).then(function (html) {
-      var node = container();
-      if (node) {
-        if (html) { node.innerHTML = html; node.hidden = false; }
-        else { node.innerHTML = ''; node.hidden = true; }
-      }
+    Promise.resolve(request).then(function (reply) {
+      if (stopped) return;
+      try { show(reply); } catch (e) { console.error('[fatigue-viewer] widget', e); }
       settle();
     }, function (e) { console.error('[fatigue-viewer] widget', e); settle(); });
-  }
-  function watch() {
-    var current = page();
-    if (observer && observed === current) return;
-    if (observer) { observer.disconnect(); observer = null; observed = null; }
-    if (!current) return;
-    observer = new MutationObserver(function () {
-      watch();
-      if (page() && !document.getElementById(CONTAINER_ID) && !pending) refresh();
-    });
-    observer.observe(current, { childList: true, subtree: true });
-    observed = current;
   }
   window.FatigueViewerWidget = {
     refresh: refresh,
     stop: function () {
-      if (observer) { observer.disconnect(); observer = null; observed = null; }
-      var node = document.getElementById(CONTAINER_ID);
-      if (node) node.remove();
+      stopped = true;
+      if (retry) { clearTimeout(retry); retry = null; }
+      removeCard();
     }
   };
-  watch();
   refresh();
 } catch (e) { console.error('[fatigue-viewer] widget', e); } })();`;
 
@@ -94,11 +126,12 @@ function createOfficeWidget({ ui, ipc, queries, logger }) {
 
   function start() {
     ipc.handle('widget-html', (event, locale) => {
+      const title = t(locale, 'widget.title');
       try {
-        return renderWidget(queries.getWatchlist(), locale);
+        return { html: renderWidget(queries.getWatchlist(), locale), title };
       } catch (e) {
         logger.error('widget-html', e);
-        return '';
+        return { html: '', title };
       }
     });
     run(WIDGET_SCRIPT, 'officeWidget.start');
@@ -112,4 +145,4 @@ function createOfficeWidget({ ui, ipc, queries, logger }) {
   };
 }
 
-module.exports = { createOfficeWidget, WIDGET_SCRIPT, REFRESH_SCRIPT, STOP_SCRIPT, CONTAINER_ID };
+module.exports = { createOfficeWidget, WIDGET_SCRIPT, REFRESH_SCRIPT, STOP_SCRIPT };

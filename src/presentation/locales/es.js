@@ -60,10 +60,9 @@ module.exports = Object.freeze({
   'settings.saved': 'Guardado',
   'settings.error': 'No se pudo guardar',
   'widget.title': 'Fatiga y riesgo de lesión',
-  'widget.empty': 'Ningún luchador que vigilar.',
+  'widget.empty': 'Ningún luchador cansado o en riesgo.',
   'widget.more.one': '+ {count} más',
   'widget.more.other': '+ {count} más',
-  'widget.seeAll': 'Ver todo',
   'widget.fatigue': 'Fatiga {value}',
   'avatar.photoOf': 'Foto de {name}',
 });

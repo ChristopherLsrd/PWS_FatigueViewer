@@ -60,10 +60,9 @@ module.exports = Object.freeze({
   'settings.saved': 'Salvo',
   'settings.error': 'Não foi possível salvar',
   'widget.title': 'Fadiga e risco de lesão',
-  'widget.empty': 'Nenhum lutador para vigiar.',
+  'widget.empty': 'Nenhum lutador cansado ou em risco.',
   'widget.more.one': '+ {count} outro',
   'widget.more.other': '+ {count} outros',
-  'widget.seeAll': 'Ver tudo',
   'widget.fatigue': 'Fadiga {value}',
   'avatar.photoOf': 'Foto de {name}',
 });

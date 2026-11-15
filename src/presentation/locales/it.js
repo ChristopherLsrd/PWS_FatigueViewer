@@ -60,10 +60,9 @@ module.exports = Object.freeze({
   'settings.saved': 'Salvato',
   'settings.error': 'Salvataggio non riuscito',
   'widget.title': 'Fatica e rischio infortunio',
-  'widget.empty': 'Nessun wrestler da tenere d\'occhio.',
+  'widget.empty': 'Nessun wrestler stanco o a rischio.',
   'widget.more.one': '+ {count} altro',
   'widget.more.other': '+ altri {count}',
-  'widget.seeAll': 'Vedi tutto',
   'widget.fatigue': 'Fatica {value}',
   'avatar.photoOf': 'Foto di {name}',
 });

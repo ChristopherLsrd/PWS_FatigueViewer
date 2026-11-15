@@ -60,10 +60,9 @@ module.exports = Object.freeze({
   'settings.saved': 'Gespeichert',
   'settings.error': 'Speichern fehlgeschlagen',
   'widget.title': 'Erschöpfung & Verletzungsrisiko',
-  'widget.empty': 'Kein Wrestler zu beobachten.',
+  'widget.empty': 'Kein erschöpfter oder gefährdeter Wrestler.',
   'widget.more.one': '+ {count} weiterer',
   'widget.more.other': '+ {count} weitere',
-  'widget.seeAll': 'Alle anzeigen',
   'widget.fatigue': 'Erschöpfung {value}',
   'avatar.photoOf': 'Foto von {name}',
 });
