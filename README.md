@@ -39,6 +39,10 @@ Bouton **Réglages** en haut de la page Fatigue Viewer. Chaque changement est en
 
 `database`, `database:write` (uniquement pour le congé), `events`.
 
+## Logo
+
+Logo pour le Steam Workshop : [assets/fatigue-viewer-logo.png](assets/fatigue-viewer-logo.png) (source SVG dans le même dossier).
+
 ## Développement
 
 Architecture propre : `src/domain` (règles pures), `src/application` (ports et cas d'usage), `src/presentation` (HTML et textes), `src/adapters` (base de données et interface du jeu). `test/architecture.test.js` vérifie le sens des dépendances.
