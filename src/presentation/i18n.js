@@ -4,8 +4,12 @@
 // Français et anglais sont obligatoires ; les autres langues sont en bonus. Toute clé manquante replie sur l'anglais.
 const en = require('./locales/en');
 const fr = require('./locales/fr');
+const de = require('./locales/de');
+const es = require('./locales/es');
+const it = require('./locales/it');
+const pt = require('./locales/pt');
 
-const MESSAGES = Object.freeze({ en, fr });
+const MESSAGES = Object.freeze({ en, fr, de, es, it, pt });
 
 // Langues où 0 et 1 prennent le singulier.
 const SINGULAR_BELOW_TWO = new Set(['fr', 'pt']);

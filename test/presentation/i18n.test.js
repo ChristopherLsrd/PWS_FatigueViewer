@@ -46,3 +46,15 @@ test('errorMessage traduit chaque motif et replie sur readFailed', () => {
   }
   assert.equal(errorMessage('fr', 'weird'), errorMessage('fr', 'readFailed'));
 });
+
+test('langues bonus disponibles et complètes', () => {
+  for (const lang of ['de', 'es', 'it', 'pt']) {
+    assert.equal(resolveLocale(lang), lang);
+    const missing = Object.keys(MESSAGES.en).filter((key) => !(key in MESSAGES[lang]));
+    assert.deepEqual(missing, [], lang);
+  }
+  assert.equal(t('de', 'leave.button'), 'Auszeit');
+  assert.equal(t('es-MX', 'leave.button'), 'Descanso');
+  assert.equal(t('it', 'leave.button'), 'Riposo');
+  assert.equal(t('pt-BR', 'leave.button'), 'Folga');
+});
