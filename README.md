@@ -36,7 +36,7 @@ Bouton **Réglages** en haut de la page Fatigue Viewer. Chaque changement est en
 
 ## Permissions
 
-`database`, `database:write` (uniquement pour le congé), `events`, `ui`.
+`database`, `database:write` (uniquement pour le congé), `events`.
 
 ## Développement
 
