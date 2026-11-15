@@ -1,0 +1,9 @@
+{
+  "id": "fatigue-viewer",
+  "name": "Fatigue Viewer",
+  "version": "1.0.0",
+  "description": "Roster fatigue and injury risk, office widget and time off.",
+  "author": "",
+  "main": "index.js",
+  "permissions": ["database", "database:write", "events", "ui"]
+}
