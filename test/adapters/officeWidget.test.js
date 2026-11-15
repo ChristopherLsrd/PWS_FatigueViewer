@@ -26,6 +26,18 @@ test('les scripts du renderer sont du JavaScript valide et ciblent le Bureau', (
   assert.match(WIDGET_SCRIPT, /window\.FatigueViewerWidget/);
 });
 
+test('WIDGET_SCRIPT : conteneur masqué, observer réattaché, file de rafraîchissement', () => {
+  assert.match(WIDGET_SCRIPT, /node\.hidden = true/);
+  assert.match(WIDGET_SCRIPT, /node\.hidden = false/);
+  assert.match(WIDGET_SCRIPT, /again/);
+  assert.match(WIDGET_SCRIPT, /observed/);
+  assert.match(WIDGET_SCRIPT, /try \{\s*request = plugins\.invoke/);
+  assert.match(WIDGET_SCRIPT, /pending = false;\s*if \(again\)/);
+  const removes = WIDGET_SCRIPT.match(/\.remove\(\)/g) || [];
+  assert.equal(removes.length, 1, 'seul stop retire le conteneur');
+  assert.doesNotMatch(WIDGET_SCRIPT, /if \(old\) old\.remove/);
+});
+
 test('start enregistre le canal et injecte le script', () => {
   const { ui, ipc } = setup(() => ({ ok: true, enabled: true, items: ITEMS, total: 1 }));
   assert.equal(typeof ipc.handlers['widget-html'], 'function');

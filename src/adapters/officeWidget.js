@@ -9,7 +9,9 @@ const WIDGET_SCRIPT = `(function () { try {
   var PLUGIN = 'fatigue-viewer';
   var CONTAINER_ID = '${CONTAINER_ID}';
   var observer = null;
+  var observed = null;
   var pending = false;
+  var again = false;
   function locale() {
     try { return (typeof I18n !== 'undefined' && I18n && I18n.locale) ? String(I18n.locale) : null; } catch (e) { return null; }
   }
@@ -28,31 +30,51 @@ const WIDGET_SCRIPT = `(function () { try {
     node.id = CONTAINER_ID;
     node.className = 'fv-office-widget';
     node.setAttribute('data-plugin-id', PLUGIN);
+    node.hidden = true;
     parent.appendChild(node);
     return node;
   }
+  function settle() {
+    pending = false;
+    if (again) { again = false; refresh(); }
+  }
   function refresh() {
-    if (pending) return;
+    watch();
+    if (pending) { again = true; return; }
     pending = true;
-    plugins.invoke(PLUGIN, 'widget-html', locale()).then(function (html) {
-      pending = false;
-      if (!html) { var old = document.getElementById(CONTAINER_ID); if (old) old.remove(); return; }
+    var request;
+    try {
+      request = plugins.invoke(PLUGIN, 'widget-html', locale());
+    } catch (e) {
+      console.error('[fatigue-viewer] widget', e);
+      settle();
+      return;
+    }
+    Promise.resolve(request).then(function (html) {
       var node = container();
-      if (node) node.innerHTML = html;
-    }).catch(function (e) { pending = false; console.error('[fatigue-viewer] widget', e); });
+      if (node) {
+        if (html) { node.innerHTML = html; node.hidden = false; }
+        else { node.innerHTML = ''; node.hidden = true; }
+      }
+      settle();
+    }, function (e) { console.error('[fatigue-viewer] widget', e); settle(); });
   }
   function watch() {
-    var office = page();
-    if (!office || observer) return;
+    var current = page();
+    if (observer && observed === current) return;
+    if (observer) { observer.disconnect(); observer = null; observed = null; }
+    if (!current) return;
     observer = new MutationObserver(function () {
-      if (!document.getElementById(CONTAINER_ID) && !pending) refresh();
+      watch();
+      if (page() && !document.getElementById(CONTAINER_ID) && !pending) refresh();
     });
-    observer.observe(office, { childList: true, subtree: true });
+    observer.observe(current, { childList: true, subtree: true });
+    observed = current;
   }
   window.FatigueViewerWidget = {
     refresh: refresh,
     stop: function () {
-      if (observer) { observer.disconnect(); observer = null; }
+      if (observer) { observer.disconnect(); observer = null; observed = null; }
       var node = document.getElementById(CONTAINER_ID);
       if (node) node.remove();
     }
