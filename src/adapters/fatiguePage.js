@@ -9,9 +9,12 @@ const { SETTINGS_SCHEMA } = require('../application/ports');
 
 const PAGE_ID = 'fatigueViewerPage';
 
+// Batterie presque vide : la fatigue.
 const ICON = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">'
-  + '<path fill="currentColor" d="M64 96h288v64H64zm0 128h224v64H64zm0 128h160v64H64zm336-224 64 64-96 96-64-64z'
-  + 'M368 320h80v112h-80z"/></svg>';
+  + '<path fill="currentColor" fill-rule="evenodd" d="M72 144h336a40 40 0 0 1 40 40v144a40 40 0 0 1-40 40H72'
+  + 'a40 40 0 0 1-40-40V184a40 40 0 0 1 40-40zm8 48v128h320V192z"/>'
+  + '<rect fill="currentColor" x="464" y="208" width="40" height="96" rx="12"/>'
+  + '<rect fill="currentColor" x="104" y="216" width="72" height="80" rx="8"/></svg>';
 
 // Script exécuté dans la fenêtre du jeu. Chaque appel transmet la langue du jeu (I18n.locale).
 const PAGE_SCRIPT = `(function () { try {
