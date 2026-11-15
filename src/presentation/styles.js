@@ -45,6 +45,9 @@ const FATIGUE_VIEWER_CSS = `
 #mainOfficePage .fv-office-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; }
 #mainOfficePage .fv-office-row > .fv-avatar { width: 36px; height: 36px; }
 #mainOfficePage .fv-office-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+#mainOfficePage .mainOfficeGrid:not(.isEditing) .fv-office-title { cursor: pointer; }
+#mainOfficePage .mainOfficeGrid:not(.isEditing) .fv-office-title:hover { color: var(--m-accent); }
+#mainOfficePage .fv-office-row { cursor: pointer; }
 #mainOfficePage .fv-office-row:hover { background: color-mix(in srgb, var(--m-tint) 3%, transparent); }
 #mainOfficePage .fv-office-top { display: flex; align-items: center; gap: 8px; }
 #mainOfficePage .fv-office-name { flex: 1 1 auto; min-width: 0; font-weight: 600; color: var(--m-fg);

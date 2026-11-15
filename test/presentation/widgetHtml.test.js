@@ -13,11 +13,11 @@ test('rien à afficher si erreur ou widget désactivé', () => {
   assert.equal(renderWidget({ ok: true, enabled: false, items: [], total: 0 }, 'fr'), '');
 });
 
-test('carte au format des widgets du Bureau, cliquable vers la page', () => {
+test('carte au format des widgets du Bureau, le titre ouvre la page', () => {
   assert.equal(WIDGET_ID, 'fatigueViewer');
   const html = renderWidget({ ok: true, enabled: true, items: ITEMS, total: 2 }, 'fr');
-  assert.match(html, /^<div class="panel" data-widget="fatigueViewer" onclick="Game\.showPage\('fatigueViewerPage'\)">/);
-  assert.match(html, /<h3>Fatigue et risque de blessure<\/h3>/);
+  assert.match(html, /^<div class="panel" data-widget="fatigueViewer">/);
+  assert.match(html, /<h3 class="fv-office-title" onclick="Game\.showPage\('fatigueViewerPage'\)">Fatigue et risque de blessure<\/h3>/);
   assert.match(html, /<div class="panelContents fv-office">/);
   assert.doesNotMatch(html, /Voir tout/);
 });
@@ -25,11 +25,19 @@ test('carte au format des widgets du Bureau, cliquable vers la page', () => {
 test('une ligne par catcheur : avatar, nom, badge, puis fatigue et risque', () => {
   const html = renderWidget({ ok: true, enabled: true, items: ITEMS, total: 2 }, 'fr');
   assert.equal((html.match(/class="fv-office-row"/g) || []).length, 2);
-  assert.match(html, /<div class="fv-office-row"><span class="fv-avatar"[^>]*data-fv-picture="Tired\.png"[^>]*>TO<\/span><div class="fv-office-text"><div class="fv-office-top">/);
+  assert.match(html, /<div class="fv-office-row" onclick="[^"]*"><span class="fv-avatar"[^>]*data-fv-picture="Tired\.png"[^>]*>TO<\/span><div class="fv-office-text"><div class="fv-office-top">/);
   assert.match(html, /<span class="fv-office-name">Tired &lt;One&gt;<\/span>/);
   assert.match(html, /class="fv-badge fv-level-high">Élevé</);
   assert.match(html, /class="fv-badge fv-level-medium">Moyen</);
   assert.match(html, /<div class="fv-office-meta">Fatigue 70 · 1,9.%<\/div>/);
+});
+
+test('un clic sur une ligne ouvre la fiche du catcheur (par son contrat)', () => {
+  const html = renderWidget({ ok: true, enabled: true, items: ITEMS, total: 2 }, 'fr');
+  assert.match(html, /onclick="if \(typeof Booking !== &#39;undefined&#39; &amp;&amp; Booking\.showWorkerDetails\) Booking\.showWorkerDetails\(1\)"/);
+  assert.match(html, /Booking\.showWorkerDetails\(2\)/);
+  const odd = renderWidget({ ok: true, enabled: true, items: [{ ...ITEMS[0], contractId: '1);alert(1' }], total: 1 }, 'fr');
+  assert.match(odd, /Booking\.showWorkerDetails\(NaN\)/);
 });
 
 test('indique les catcheurs non affichés', () => {

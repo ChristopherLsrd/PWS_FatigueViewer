@@ -10,7 +10,7 @@ Le plugin s'affiche en français ou en anglais selon la langue du jeu (allemand,
   - **Catcheurs disponibles** : fatigue (barre), risque de blessure par match (pourcentage et niveau Faible / Moyen / Élevé), jours avant récupération complète, traits (fragile, maudit, robuste) et bouton **Congé**. Clic sur un en-tête pour trier.
   - **En congé / suspendus** : motif et date de retour.
   - **Blessés** : type de blessure et date de retour.
-- **Widget du Bureau** : une carte de la grille du Bureau, comme les widgets du jeu (déplaçable et redimensionnable en mode « Modifier la disposition », masquable depuis le menu des widgets). Elle liste les catcheurs fatigués (au-dessus du seuil) ou à risque élevé, du plus grave au moins grave : avatar, nom, badge de risque, fatigue et % de risque. Un clic sur la carte ouvre la page.
+- **Widget du Bureau** : une carte de la grille du Bureau, comme les widgets du jeu (déplaçable et redimensionnable en mode « Modifier la disposition », masquable depuis le menu des widgets). Elle liste les catcheurs fatigués (au-dessus du seuil) ou à risque élevé, du plus grave au moins grave : avatar, nom, badge de risque, fatigue et % de risque. Un clic sur le titre ouvre la page Fatigue Viewer, un clic sur un catcheur ouvre sa fiche.
 - **Congé** : choisis une durée de 1 à 90 jours (par défaut, le temps de récupérer complètement). Le plugin écrit sur le contrat exactement ce que le bouton de congé du jeu écrit : `onTimeOff`, `timeOffEndDate`, `suspended`, `suspensionEndDate`. Le jeu gère ensuite le retour du catcheur.
 
 ## Risque de blessure

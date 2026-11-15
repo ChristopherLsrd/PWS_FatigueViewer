@@ -10,7 +10,8 @@ const PAGE_ID = 'fatigueViewerPage';
 
 function row(w, locale) {
   const meta = `${t(locale, 'widget.fatigue', { value: Math.round(w.fatigue) })} · ${formatPercent(w.risk, locale)}`;
-  return '<div class="fv-office-row">'
+  const open = `if (typeof Booking !== 'undefined' && Booking.showWorkerDetails) Booking.showWorkerDetails(${Number(w.contractId)})`;
+  return `<div class="fv-office-row" onclick="${escapeHtml(open)}">`
     + renderAvatar(w, locale)
     + '<div class="fv-office-text">'
     + '<div class="fv-office-top">'
@@ -31,8 +32,8 @@ function renderWidget(result, locale) {
   const more = hidden > 0
     ? `<div class="fv-office-more">${escapeHtml(tCount(locale, 'widget.more', hidden))}</div>`
     : '';
-  return `<div class="panel" data-widget="${WIDGET_ID}" onclick="Game.showPage('${PAGE_ID}')">`
-    + `<h3>${escapeHtml(t(locale, 'widget.title'))}</h3>`
+  return `<div class="panel" data-widget="${WIDGET_ID}">`
+    + `<h3 class="fv-office-title" onclick="Game.showPage('${PAGE_ID}')">${escapeHtml(t(locale, 'widget.title'))}</h3>`
     + `<div class="panelContents fv-office">${body}${more}</div>`
     + '</div>';
 }
